@@ -1,0 +1,58 @@
+$color-main: initial;
+$color-webcenter: #e96259;
+
+$point-xs: 480px;
+$point-sm: 768px;
+$point-md: 992px;
+$point-lg: 1200px;
+
+$font-main: 'Tahoma', 'Arial', sans-serif;
+
+$path: '../';
+
+%clear {
+	content: '';
+	display: table;
+	width: 100%;
+	clear: both;
+}
+
+@mixin screen-mobile($direct: 'min') {
+	@media (if ($direct == 'max', 'max-width: #{$point-xs} - 1', 'min-width: #{$point-xs}')) {
+		@content;
+	}
+}
+
+@mixin screen-tablet($direct: 'min') {
+	@media (if ($direct == 'max', 'max-width: #{$point-sm} - 1', 'min-width: #{$point-sm}')) {
+		@content;
+	}
+}
+
+@mixin screen-desktop($direct: 'min') {
+	@media (if ($direct == 'max', 'max-width: #{$point-md} - 1', 'min-width: #{$point-md}')) {
+		@content;
+	}
+}
+
+@mixin screen-large($direct: 'min') {
+	@media (if ($direct == 'max', 'max-width: #{$point-lg} - 1', 'min-width: #{$point-lg}')) {
+		@content;
+	}
+}
+
+// Подключение изображений для ретины
+@mixin bgi-retina($file, $type: 'png', $width: 100%, $height: $width) {
+	background-image: url($file + '.' + $type);
+
+	@media only screen and (-webkit-min-device-pixel-ratio: 1.5),
+	only screen and (min-resolution: 144dpi) {
+		background-image: url($file + '@2x.' + $type);
+
+		@if $width == cover or $width == contain {
+			$height: null;
+		}
+
+		background-size: $width $height;
+	}
+}

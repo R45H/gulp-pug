@@ -1,0 +1,7 @@
+@import url('global/variables.scss'); // SASS переменные
+@import url('global/global.scss');    // Глобальные стили
+@import url('global/fonts.scss');     // Шрифты
+
+@import url('blocks/header.scss');    // Шапка
+@import url('blocks/main.scss');      // Контейнер контента
+@import url('blocks/footer.scss');    // Подвал
