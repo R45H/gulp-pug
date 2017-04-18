@@ -1,4 +1,4 @@
-$color-main: initial;
+$color-main: null;
 $color-webcenter: #e96259;
 
 $point-xs: 480px;
@@ -6,7 +6,9 @@ $point-sm: 768px;
 $point-md: 992px;
 $point-lg: 1200px;
 
-$font-main: 'Tahoma', 'Arial', sans-serif;
+$font-main: sans-serif;
+
+$duration: .3s;
 
 $path: '../';
 
@@ -17,26 +19,32 @@ $path: '../';
 	clear: both;
 }
 
-@mixin screen-mobile($direct: 'min') {
-	@media (if ($direct == 'max', 'max-width: #{$point-xs} - 1', 'min-width: #{$point-xs}')) {
+@mixin screen-xs($direct: 'min') {
+	@media (if($direct == 'max', 'max-width: #{$point-xs} - 1', 'min-width: #{$point-xs}')) {
+		@content;
+	}
+}
+@mixin screen-sm($direct: 'min') {
+	@media (if($direct == 'max', 'max-width: #{$point-sm} - 1', 'min-width: #{$point-sm}')) {
+		@content;
+	}
+}
+@mixin screen-md($direct: 'min') {
+	@media (if($direct == 'max', 'max-width: #{$point-md} - 1', 'min-width: #{$point-md}')) {
+		@content;
+	}
+}
+@mixin screen-lg($direct: 'min') {
+	@media (if($direct == 'max', 'max-width: #{$point-lg} - 1', 'min-width: #{$point-lg}')) {
 		@content;
 	}
 }
 
-@mixin screen-tablet($direct: 'min') {
-	@media (if ($direct == 'max', 'max-width: #{$point-sm} - 1', 'min-width: #{$point-sm}')) {
-		@content;
-	}
-}
+// Ретина
+@mixin retina() {
 
-@mixin screen-desktop($direct: 'min') {
-	@media (if ($direct == 'max', 'max-width: #{$point-md} - 1', 'min-width: #{$point-md}')) {
-		@content;
-	}
-}
-
-@mixin screen-large($direct: 'min') {
-	@media (if ($direct == 'max', 'max-width: #{$point-lg} - 1', 'min-width: #{$point-lg}')) {
+	@media only screen and (-webkit-min-device-pixel-ratio: 1.5),
+	only screen and (min-resolution: 144dpi) {
 		@content;
 	}
 }
@@ -45,8 +53,7 @@ $path: '../';
 @mixin bgi-retina($file, $type: 'png', $width: 100%, $height: $width) {
 	background-image: url($file + '.' + $type);
 
-	@media only screen and (-webkit-min-device-pixel-ratio: 1.5),
-	only screen and (min-resolution: 144dpi) {
+	@include retina() {
 		background-image: url($file + '@2x.' + $type);
 
 		@if $width == cover or $width == contain {

@@ -25,6 +25,7 @@
     "gulp.spritesmith": "^6.2.1",
     "imagemin-pngquant": "^5.0.0",
     "path": "^0.12.7",
-    "pug": "^2.0.0-beta9"
+    "pug": "^2.0.0-beta9",
+    "run-sequence": "^1.2.2"
   }
 }

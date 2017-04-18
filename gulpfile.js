@@ -1,6 +1,6 @@
 /* ===== ПОДКЛЮЧЕНИЕ ПЛАГИНОВ ===== */
 var
-	gulp         = require('gulp'),                         // GULP
+   gulp         = require('gulp'),                         // GULP
    sass         = require('gulp-sass'),                    // Препроцессор Sass
    browserSync  = require('browser-sync'),                 // Автоперезагрузка браузера
    uglify       = require('gulp-uglifyjs'),                // Сжатие JS
@@ -16,9 +16,10 @@ var
    plumber      = require('gulp-plumber'),                 // Перехват ошибок
    gutil        = require('gulp-util'),                    // Различные вспомогательные утилиты
    cssImport    = require('gulp-cssimport'),               // Работа @import
-	path         = require('path'),                         // Для работы с путями
-	strip        = require('gulp-strip-css-comments'),      // Убирает комментарии
-	pug          = require('gulp-pug')                      // Шаблонизатор Pug (бывший Jade)
+   strip        = require('gulp-strip-css-comments'),      // Убирает комментарии
+   path         = require('path'),                         // Для работы с путями
+   runSequence  = require('run-sequence'),                 // Для синхронного выполнения задач
+   pug          = require('gulp-pug')                      // Шаблонизатор Pug (бывший Jade)
 ;
 /* ================================ */
 
@@ -49,7 +50,7 @@ var dist = 'dist/'; //Папка готового проекта
 /* ===== ТАСК "BROWSER-SYNC" ====== */
 gulp.task('browser-sync', function() {
 	browserSync({ // Выполняем browserSync
-		server: 'dist', // Директория для сервера
+		server: dist, // Директория для сервера
 		notify: false, // Отключаем уведомления
 		open: 'external', // Внешняя ссылка вместо localhost
 		ghostMode: false // Отключаем синхронизацию между устройствами
@@ -148,16 +149,21 @@ gulp.task('clean', function() {
 /* ================================ */
 
 /* ========= ТАСК "BUILD" ========= */
-gulp.task('build', [
-	'clean',
-	'pug',
-	'sass',
-	'css-libs',
-	'js',
-	'js-libs',
-	'img',
-	'fonts'
-]);
+gulp.task('build', function(callback) {
+	runSequence(
+		'clean',
+		[
+			'pug',
+			'sass',
+			'css-libs',
+			'js',
+			'js-libs',
+			'img',
+			'fonts'
+		],
+		callback
+	);
+});
 /* ================================ */
 
 /* ========= ТАСК "WATCH" ========= */
@@ -179,7 +185,14 @@ gulp.task('watch', function() {
 /* -------------------------------- */
 
 /* ===== КОМАНДА ПО УМОЛЧАНИЮ ===== */
-gulp.task('default', ['build', 'browser-sync', 'watch']);
+gulp.task('default', function(callback) {
+	runSequence(
+		'build',
+		'browser-sync',
+		'watch',
+		callback
+	);
+});
 /* ================================ */
 
 /* ======== ОЧИСТКА КЭША ========== */
