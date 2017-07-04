@@ -9,13 +9,3 @@
 	font-weight: normal;
 	font-style: normal;
 }
-
-@font-face {
-	font-family: 'Glyphicons Halflings';
-	src: url($path + 'fonts/bootstrap/glyphicons-halflings-regular.eot');
-	src: url($path + 'fonts/bootstrap/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'),
-	url($path + 'fonts/bootstrap/glyphicons-halflings-regular.woff2') format('woff2'),
-	url($path + 'fonts/bootstrap/glyphicons-halflings-regular.woff') format('woff'),
-	url($path + 'fonts/bootstrap/glyphicons-halflings-regular.ttf') format('truetype'),
-	url($path + 'fonts/bootstrap/glyphicons-halflings-regular.svg#glyphicons_halflingsregular') format('svg');
-}

@@ -9,8 +9,7 @@
   "homepage": "",
   "dependencies": {
     "jquery": "2.*",
-    "bootstrap": "3.*",
-    "owl.carousel": "2.*",
-    "fontawesome": "4.*"
+    "fontawesome": "4.*",
+    "normalize-css": "^7.0.0"
   }
 }

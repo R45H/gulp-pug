@@ -1,0 +1,18 @@
+doctype html
+block vars
+html(lang="ru")
+	head
+		include ../partials/head
+		title #{page.title} | Sitename
+	body
+		include ../partials/header
+
+		.wrapper
+			main.main
+				block content
+
+			include ../partials/footer
+
+			// END OF VISIBLE CONTENT
+
+			// Write invisible content here

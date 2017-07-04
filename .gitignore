@@ -1,7 +1,12 @@
 node_modules/
 .idea/
 npm-debug.log
+/app/img/backup/
 /app/layout/
 !/app/layout/.gitkeep
-/app/img/backup/
+/app/sprites/
+!/app/sprites/.gitkeep
 /dist/
+/production/
+/temp/
+/ftp/

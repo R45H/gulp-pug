@@ -19,7 +19,10 @@ var
    strip        = require('gulp-strip-css-comments'),      // Убирает комментарии
    path         = require('path'),                         // Для работы с путями
    runSequence  = require('run-sequence'),                 // Для синхронного выполнения задач
-   pug          = require('gulp-pug')                      // Шаблонизатор Pug (бывший Jade)
+   pug          = require('gulp-pug'),                     // Шаблонизатор Pug (бывший Jade)
+   merge        = require('gulp-merge-json'),              // Конкатенация JSON
+   data         = require('gulp-data'),                    // Парс JSON
+   fs           = require('fs')                            // Чтение JSON
 ;
 /* ================================ */
 
@@ -39,9 +42,13 @@ var err = {
 	}
 };
 
+// Переключатель сборки для работы или в продакшн (false для работы)
+var prod = gutil.env.production;
+
 // Пути
-var app = 'app/'; //Папка исходников
-var dist = 'dist/'; //Папка готового проекта
+var app = 'app/'; // Папка исходников
+var dist = prod ? 'production/' : 'dist/'; // Папка готового проекта
+var temp = 'temp/'; //Папка со служебными файлами
 
 /* ================================ */
 
@@ -52,19 +59,32 @@ gulp.task('browser-sync', function() {
 	browserSync({ // Выполняем browserSync
 		server: dist, // Директория для сервера
 		notify: false, // Отключаем уведомления
-		open: 'external', // Внешняя ссылка вместо localhost
 		ghostMode: false // Отключаем синхронизацию между устройствами
 	});
 });
 /* ================================ */
 
+/* ========= ТАСК "JSON" ========== */
+gulp.task('json', function() {
+	return gulp.src(app + '/templates/data/**/*.json') // Возьмём файлы
+		.pipe(plumber(err)) // Отслеживаем ошибки
+		.pipe(merge({ // Сольём в один
+			fileName: 'data.json'
+		}))
+		.pipe(gulp.dest('temp/')); // Выплюнем
+});
+/* ================================ */
+
 /* ========= ТАСК "PUG" ========== */
 gulp.task('pug', function () {
-	return gulp.src(app + '*.pug') //Выберем файлы по нужному пути
+	return gulp.src(app + 'templates/*.pug') // Выберем файлы по нужному пути
 		.pipe(plumber(err)) // Отслеживаем ошибки
-		.pipe(pug({ // Сконвертим в HTML
-			pretty: '\t' // Форматируем с табами вместо пробелов
+		.pipe(data(function(file) { // Парсим JSON
+			return JSON.parse(fs.readFileSync('temp/data.json'))
 		}))
+		.pipe(prod ? pug({ // Сконвертим в HTML
+			pretty: '\t' // Форматируем с табами вместо пробелов
+		}) : pug())
 		.pipe(gulp.dest(dist)) //Выплюнем их
 		.pipe(reload({stream: true})); //Перезагрузим сервер
 });
@@ -77,9 +97,9 @@ gulp.task('sass', function() {
 		.pipe(cssImport()) // Запускаем @import
 		.pipe(sass({outputStyle: 'expanded'})) // Преобразуем SCSS в CSS
 		.pipe(queries()) // Объединяем медиа запросы
-		.pipe(autoprefixer(['last 15 versions', '>1%', 'ie 8', 'ie 7'], {cascade: true})) // Создаём префиксы
+		.pipe(prod ? autoprefixer(['last 15 versions', '>1%', 'ie 8', 'ie 7'], {cascade: true}) : gutil.noop()) // Создаём префиксы
 		.pipe(gulp.dest(dist + 'css/')) // Выгружаем результат
-		.pipe(reload({stream: true})); //Перезагружаем сервер
+		.pipe(reload({stream: true})); // Перезагружаем сервер
 });
 /* ================================ */
 
@@ -88,13 +108,13 @@ gulp.task('css-libs', function() {
 	return gulp.src(app + 'src/libs.scss') // Берём источник
 		.pipe(plumber(err)) // Отслеживаем ошибки
 		.pipe(cssImport()) // Запускаем @import
-		.pipe(sass({outputStyle: 'compressed'})) // Преобразуем SCSS в CSS
-		.pipe(strip({ // Убираем комментарии
+		.pipe(sass({outputStyle: prod ? 'compressed' : 'expanded'})) // Преобразуем SCSS в CSS
+		.pipe(prod ? strip({ // Убираем комментарии
 			preserve: false // /* */ - Такие тоже
-		}))
+		}) : gutil.noop())
 		.pipe(rename({suffix: '.min'})) // Добавляем суффикс ".min"
 		.pipe(gulp.dest(dist + 'css')) // Выгружаем
-		.pipe(reload({stream: true})); //Перезагружаем сервер
+		.pipe(reload({stream: true})); // Перезагружаем сервер
 });
 /* ================================ */
 
@@ -104,7 +124,7 @@ gulp.task('js', function() {
 		.pipe(plumber(err)) // Отслеживаем ошибки
 		.pipe(include()) // Собираем их в один файл
 		.pipe(gulp.dest(dist + 'js')) // Выгружаем
-		.pipe(reload({stream: true})); //Перезагружаем сервер
+		.pipe(reload({stream: true})); // Перезагружаем сервер
 });
 /* ================================ */
 
@@ -113,24 +133,24 @@ gulp.task('js-libs', function() {
 	return gulp.src(app + 'src/libs.js') // Берём все необходимые скрипты
 		.pipe(plumber(err)) // Отслеживаем ошибки
 		.pipe(include()) // Собираем их в один файл
-		.pipe(uglify()) //Сжимаем
+		.pipe(prod ? uglify() : gutil.noop()) // Сжимаем
 		.pipe(rename({suffix: '.min'})) // Добавляем суффикс ".min"
 		.pipe(gulp.dest(dist + 'js')) // Выгружаем
-		.pipe(reload({stream: true})); //Перезагружаем сервер
+		.pipe(reload({stream: true})); // Перезагружаем сервер
 });
 /* ================================ */
 
 /* ========== ТАСК "IMG" ========== */
 gulp.task('img', function() {
 	return gulp.src(app + 'img/**/*') // Берём все изображения
-		.pipe(cache(imagemin({ // Сжимаем их с наилучшими настройками с учётом кэширования
+		.pipe(prod ? cache(imagemin({ // Сжимаем их с наилучшими настройками с учётом кэширования
 			interlaced: true,
 			progressive: true,
 			svgoPlugins: [{removeViewBox: false}],
 			use: [pngquant()]
-		})))
+		})) : gutil.noop())
 		.pipe(gulp.dest(dist + 'img')) // Выгружаем на продакшн
-		.pipe(reload({stream: true})); //Перезагружаем сервер
+		.pipe(reload({stream: true})); // Перезагружаем сервер
 });
 /* ================================ */
 
@@ -138,13 +158,13 @@ gulp.task('img', function() {
 gulp.task('fonts', function() {
 	return gulp.src(app + 'fonts/**/*') // Берём шрифты
 	.pipe(gulp.dest(dist + 'fonts')) // Выгружаем на продакшн
-	.pipe(reload({stream: true})); //Перезагружаем сервер
+	.pipe(reload({stream: true})); // Перезагружаем сервер
 });
 /* ================================ */
 
 /* ========= ТАСК "CLEAN" ========= */
 gulp.task('clean', function() {
-	return del.sync(dist); // Удаляем папку "dist" перед сборкой
+	return del.sync([dist, temp]); // Удаляем папку "dist" перед сборкой
 });
 /* ================================ */
 
@@ -152,6 +172,7 @@ gulp.task('clean', function() {
 gulp.task('build', function(callback) {
 	runSequence(
 		'clean',
+		'json',
 		[
 			'pug',
 			'sass',
@@ -175,6 +196,12 @@ gulp.task('watch', function() {
 	gulp.watch(app + 'src/libs.js', ['js-libs']); // Наблюдение за скачанными JS файлами
 	gulp.watch(app + 'img/*', ['img']); // Наблюдение за картинками
 	gulp.watch(app + 'fonts/*', ['fonts']); // Наблюдение за шрифтами
+	gulp.watch(app + 'templates/data/**/*.json', function() { // Наблюдение за JSON файлами
+		runSequence(
+			'json',
+			'pug'
+		);
+	});
 });
 /* ================================ */
 

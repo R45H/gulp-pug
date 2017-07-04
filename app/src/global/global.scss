@@ -1,3 +1,9 @@
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
 html {
 	font-size: 10px;
 }
@@ -5,12 +11,13 @@ html {
 body {
 	font-size: 1.6rem;
 	font-family: $font-main;
+	color: $color-text;
 }
 
 input,
 textarea {
-	-webkit-appearance: none;
-	border-radius: 0;
+	//-webkit-appearance: none;
+	//border-radius: 0;
 
 	&:hover,
 	&:focus,
