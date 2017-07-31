@@ -85,7 +85,7 @@ gulp.task('pug', function () {
 		.pipe(prod ? pug({ // Сконвертим в HTML
 			pretty: '\t' // Форматируем с табами вместо пробелов
 		}) : pug())
-		.pipe(gulp.dest(dist)) //Выплюнем их
+		.pipe(gulp.dest(dist)) // Выплюнем их
 		.pipe(reload({stream: true})); //Перезагрузим сервер
 });
 /* ================================ */
