@@ -8,8 +8,10 @@
   "license": "ISC",
   "homepage": "",
   "dependencies": {
-    "jquery": "2.*",
+    "bootstrap": "v4.0.0-alpha.6",
     "fontawesome": "4.*",
-    "normalize-css": "^7.0.0"
+    "jquery": "2.*",
+    "normalize-css": "^7.0.0",
+    "slick-carousel": "^1.8.0"
   }
 }

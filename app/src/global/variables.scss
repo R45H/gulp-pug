@@ -2,6 +2,12 @@ $color-main: null;
 $color-text: #333;
 $color-webcenter: #e96259;
 
+$color-vk: #45668e;
+$color-fb: #3b5998;
+$color-insta: #bc2a8d;
+$color-yt: #bb0000;
+$color-tw: #00aced;
+
 $point-sm: 576px;
 $point-md: 768px;
 $point-lg: 992px;
@@ -13,13 +19,19 @@ $duration: .3s;
 
 $path: '../';
 
-%clear {
-	content: '';
-	display: table;
-	width: 100%;
-	clear: both;
-}
 
+// ----------------------------
+// МИКСИНЫ ДЛЯ ТЕКУЩЕГО ПРОЕКТА
+// ----------------------------
+
+// ----------------------------
+
+
+// -------------
+// ОБЩИЕ МИКСИНЫ
+// -------------
+
+// Брейкпоинты
 @mixin screen-xs($direct: 'min') {
 	@media (if($direct == 'max', 'max-width: #{$point-xs} - 1', 'min-width: #{$point-xs}')) {
 		@content;
@@ -43,6 +55,7 @@ $path: '../';
 		@content;
 	}
 }
+// ===========
 
 // Ретина
 @mixin retina() {
@@ -102,3 +115,5 @@ $path: '../';
 		}
 	}
 }
+
+// -------------
