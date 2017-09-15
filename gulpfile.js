@@ -263,16 +263,16 @@ gulp.task('page', function() {
 		title = gutil.env.title || gutil.env.t || 'Пустая страница',
 		layout = gutil.env.layout || gutil.env.l || 'default',
 		string =
-			'extends layouts/' + layout + '\n' +
-			'\n' +
-			'block vars\n' +
-			'\t-\n' +
-			'\t\tpage = {\n' +
-			'\t\t\ttitle: \'' + title + '\',\n' +
-			'\t\t\tlink: \'' + name + '.html\'\n' +
-			'\t\t}\n' +
-			'\n' +
-			'block content\n' +
+			'extends layouts/' + layout + '\r\n' +
+			'\r\n' +
+			'block vars\r\n' +
+			'\t-\r\n' +
+			'\t\tpage = {\r\n' +
+			'\t\t\ttitle: \'' + title + '\',\r\n' +
+			'\t\t\tlink: \'' + name + '.html\'\r\n' +
+			'\t\t}\r\n' +
+			'\r\n' +
+			'block content\r\n' +
 			'\tinclude pages/' + name;
 
 	fs.writeFileSync(app + 'templates/' + name + '.pug', string);
@@ -385,13 +385,13 @@ gulp.task('block', function() {
 	function addScss(path, relPath) {
 		var
 			str =
-				'$name: ' + name + ';\n' +
-				'\n' +
-				'.#{$name} {\n' +
-				'\t\n' +
+				'$name: ' + name + ';\r\n' +
+				'\r\n' +
+				'.#{$name} {\r\n' +
+				'\t\r\n' +
 				'}',
 			pathToMain = app + 'src/style.scss',
-			inc = '\n@import url(\'' + relPath + name + '.scss\');';
+			inc = '\r\n@import url(\'' + relPath + name + '.scss\');';
 
 		fs.writeFileSync(path + name + '.scss', str);
 		fs.appendFileSync(pathToMain, inc);
@@ -405,14 +405,14 @@ gulp.task('block', function() {
 
 		fs.appendFileSync(
 			app + 'src/script.js',
-			'\n(function() { @@include(\'' + relPath + name + '.js\') }());'
+			'\r\n(function() { @@include(\'' + relPath + name + '.js\') }());'
 		);
 	}
 	function addPugMixin(path) {
 
 		fs.writeFileSync(
 			path + 'mixins/' + name + '.pug',
-			'mixin ' + name + '(data)\n\t'
+			'mixin ' + name + '(data)\r\n\t'
 		);
 	}
 	function addPugComp(path) {
@@ -433,12 +433,12 @@ gulp.task('block', function() {
 		name = name.replace(new RegExp('-', 'g'), '_');
 
 		var str =
-			'{\n' +
-			'\t"' + name + '": [\n' +
-			'\t\t{\n' +
-			'\t\t\t\n' +
-			'\t\t}\n' +
-			'\t]\n' +
+			'{\r\n' +
+			'\t"' + name + '": [\r\n' +
+			'\t\t{\r\n' +
+			'\t\t\t\r\n' +
+			'\t\t}\r\n' +
+			'\t]\r\n' +
 			'}';
 
 		fs.writeFileSync(path + 'data/' + name + '.json', str);
