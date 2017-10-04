@@ -1,6 +1,8 @@
 $color-main: null;
 $color-text: #333;
-$color-webcenter: #e96259;
+
+$color-webcenter-1: #ff141f;
+$color-webcenter-2: #334b61;
 
 $color-vk: #45668e;
 $color-fb: #3b5998;
@@ -32,11 +34,6 @@ $path: '../';
 // -------------
 
 // Брейкпоинты
-@mixin screen-xs($direct: 'min') {
-	@media (if($direct == 'max', 'max-width: #{$point-xs} - 1', 'min-width: #{$point-xs}')) {
-		@content;
-	}
-}
 
 @mixin screen-sm($direct: 'min') {
 	@media (if($direct == 'max', 'max-width: #{$point-sm} - 1', 'min-width: #{$point-sm}')) {
@@ -52,6 +49,11 @@ $path: '../';
 
 @mixin screen-lg($direct: 'min') {
 	@media (if($direct == 'max', 'max-width: #{$point-lg} - 1', 'min-width: #{$point-lg}')) {
+		@content;
+	}
+}
+@mixin screen-xl($direct: 'min') {
+	@media (if($direct == 'max', 'max-width: #{$point-xl} - 1', 'min-width: #{$point-xl}')) {
 		@content;
 	}
 }

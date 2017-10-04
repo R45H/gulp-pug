@@ -1,0 +1,22 @@
+{
+	"global": [
+		{
+			"name": "Имя_проекта"
+		},
+		{
+			"addresses": [
+				{
+					"country": "Страна",
+					"city": "Город",
+					"address": "Адрес",
+					"tel": "Телефон",
+					"tel_link": "Ссылка_телефона",
+					"email": "Почта"
+				}
+			]
+		},
+		{
+			"fish": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Assumenda aut eos eum eveniet exercitationem incidunt, inventore, iusto laborum molestiae, mollitia necessitatibus nostrum perspiciatis quod tempora ullam veritatis voluptas. Accusantium aperiam, consectetur cupiditate deleniti ducimus earum facere itaque maxime natus neque nihil odit, officiis quaerat reiciendis repudiandae soluta ullam ut, voluptates. Ab adipisci deserunt exercitationem ipsa iure iusto maxime odio quaerat saepe similique sunt, tempora ullam, voluptate. Dolore molestias neque unde?"
+		}
+	]
+}
