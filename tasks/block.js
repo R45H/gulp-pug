@@ -8,7 +8,7 @@ module.exports = function(options) {
 	return function(done) {
 
 		var
-			name = $.util.env.name || $.util.env.n, // Имя блока
+			name = $.util.env.name || $.util.env.n || options.name, // Имя блока
 		
 			dirBlocks = options.dirBlocks, // Полный путь до папки с блоками
 			dirTemp = options.dirTemp, // Полный путь до папки с вёрсткой
@@ -151,18 +151,18 @@ module.exports = function(options) {
 		}
 		
 		function addDataJson(path) {
-			name = name.replace(new RegExp('-', 'g'), '_');
+			fName = fName.replace(new RegExp('-', 'g'), '_');
 		
 			var str =
 				'{\r\n' +
-				'\t"' + name + '": [\r\n' +
+				'\t"' + fName + '": [\r\n' +
 				'\t\t{\r\n' +
 				'\t\t\t\r\n' +
 				'\t\t}\r\n' +
 				'\t]\r\n' +
 				'}';
 		
-			fs.writeFileSync(path + 'data/' + name + '.json', str);
+			fs.writeFileSync(path + 'data/' + fName + '.json', str);
 		}
 		
 		function moveJsToFolder() {

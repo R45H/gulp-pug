@@ -11,7 +11,6 @@ module.exports = function(options) {
 			.pipe($.if(options.prod, $.cache($.imagemin({
 				interlaced: true,
 				progressive: true,
-				svgoPlugins: [{removeViewBox: false}],
 				use: [pngquant()]
 			}))))
 			.pipe(gulp.dest(options.dist))

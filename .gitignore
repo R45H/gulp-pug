@@ -3,8 +3,10 @@ node_modules/
 npm-debug.log
 /app/img/backup/
 /layout/**
-!/layout/.gitkeep
+!/layout/notes.txt
 /ftp/
 /build/
 /more/sprite/**
 !/more/sprite/.gitkeep
+/more/html-to-pug/**
+!/more/html-to-pug/index.html

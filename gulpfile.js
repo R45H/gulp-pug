@@ -53,7 +53,7 @@ lazyRequireTask('json', tasks + 'json', {
 lazyRequireTask('pug', tasks + 'pug', {
 	src: app + 'templates/*.pug', // Путь к исходникам
 	dist: dist, // Путь для готовых файлов
-	json: temp + jsonName, // Имя JSON файла для вставки контента
+	json: temp + jsonName, // Путь к JSON файлу для вставки контента
 	prod: prod // Флаг сборки на продакшн
 });
 
@@ -105,6 +105,28 @@ lazyRequireTask('img', tasks + 'img', {
 	prod: prod // Флаг сборки на продакшн
 });
 
+/** SVG
+ * Переносит векторные картинки, минифицирует
+ */
+lazyRequireTask('svg', tasks + 'svg', {
+	src: [ // Путь к исходникам
+		app + 'img/**/*.svg',
+		'!' + app + 'img/svg-sprite/**/*.svg'
+	],
+	dist: dist + 'img/', // Путь для готовых файлов
+	prod: prod // Флаг сборки на продакшн
+});
+
+/** SVG:SPRITE
+ * Собирает из векторных картинок спрайт
+ */
+lazyRequireTask('svg:sprite', tasks + 'svg-sprite', {
+	src: app + 'img/svg-sprite/**/*.svg', // Путь к исходникам
+	dist: dist + 'img/', // Путь для готовых файлов
+	fName: 'sprite.svg', // Имя готового файла
+	prod: prod // Флаг сборки на продакшн
+});
+
 /** FONTS
  * Переносит шрифты
  */
@@ -139,6 +161,8 @@ gulp.task('build',
 			'js',
 			'js:libs',
 			'img',
+			'svg',
+			'svg:sprite',
 			'fonts'
 		)
 	)
@@ -161,6 +185,8 @@ gulp.task('watch', function() {
 	gulp.watch([app + 'src/**/*.js', '!' + app + 'src/libs.js'], gulp.series('js'));
 	gulp.watch(app + 'src/libs.js', gulp.series('js:libs'));
 	gulp.watch(app + 'img/**/*.{jpg,jpeg,png,gif}', gulp.series('img'));
+	gulp.watch([app + 'img/**/*.svg', '!' + app + 'img/svg-sprite/**/*.svg'], gulp.series('svg'));
+	gulp.watch(app + 'img/svg-sprite/**/*.svg', gulp.series('svg:sprite'));
 	gulp.watch(app + 'fonts/**/*', gulp.series('fonts'));
 });
 
@@ -192,6 +218,13 @@ lazyRequireTask('sprite', tasks + 'sprite', {
 	fName: 'result' // Имя готового файла
 });
 
+/** HTML2:TO:PUG
+ * Конвертирует html в pug
+ */
+lazyRequireTask('html:to:pug', tasks + 'html-to-pug', {
+	src: more + 'html-to-pug/' // Путь к исходнику
+});
+
 /** PAGE
  * Создание новой pug страницы
  *
@@ -201,9 +234,9 @@ lazyRequireTask('sprite', tasks + 'sprite', {
  */
 lazyRequireTask('page', tasks + 'page', {
 	dist: app + 'templates/', // Расположение новой страницы
-	dName: 'blabla', // Имя файла по умолчанию
-	dTitle: 'Пустая страница', // Заголовок по умолчанию
-	dLayout: 'default' // Шаблон по умолчанию
+	name: 'blank', // Имя файла по умолчанию
+	title: 'Пустая страница', // Заголовок по умолчанию
+	layout: 'default' // Шаблон по умолчанию
 });
 
 /**
@@ -222,5 +255,6 @@ lazyRequireTask('block', tasks + 'block', {
 	src: app + 'src/', // Путь до корневой папки блоков
 	dirBlocks: app + 'src/blocks/', // Полный путь до папки с блоками
 	relBlocks: 'blocks/', // Относительный путь до папки с блоками
-	dirTemp: app + 'templates/' // Полный путь до папки с вёрсткой
+	dirTemp: app + 'templates/', // Полный путь до папки с вёрсткой
+	name: 'block' // Имя блока по умолчанию
 });

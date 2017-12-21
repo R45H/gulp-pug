@@ -7,9 +7,9 @@ module.exports = function(options) {
 	return function(done) {
 
 		var
-			name = $.util.env.name || $.util.env.n || options.dName,
-			title = $.util.env.title || $.util.env.t || options.dTitle,
-			layout = $.util.env.layout || $.util.env.l || options.dLayout,
+			name = $.util.env.name || $.util.env.n || options.name,
+			title = $.util.env.title || $.util.env.t || options.title,
+			layout = $.util.env.layout || $.util.env.l || options.layout,
 			string =
 				'extends layouts/' + layout + '\r\n' +
 				'\r\n' +
