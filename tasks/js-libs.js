@@ -7,9 +7,11 @@ module.exports = function(options) {
 	return function() {
 
 		return gulp.src(options.src)
-			.pipe($.fileInclude())
+			.pipe($.if(!options.prod, $.sourcemaps.init()))
+			.pipe($.include())
 			.pipe($.if(options.prod, $.uglify()))
 			.pipe($.rename({suffix: '.min'}))
+			.pipe($.if(!options.prod, $.sourcemaps.write()))
 			.pipe(gulp.dest(options.dist))
 			.pipe(bs.stream());
 	}

@@ -100,7 +100,7 @@ lazyRequireTask('js:libs', tasks + 'js-libs', {
  * Переносит растровые картинки, ужимает по весу
  */
 lazyRequireTask('img', tasks + 'img', {
-	src: app + 'img/**/*.{jpg,jpeg,png,gif}', // Путь к исходникам
+	src: app + 'img/**/*.{jpg,jpeg,png,gif,ico}', // Путь к исходникам
 	dist: dist + 'img', // Путь для готовых файлов
 	prod: prod // Флаг сборки на продакшн
 });
@@ -181,10 +181,10 @@ gulp.task('watch', function() {
 
 	gulp.watch(app + 'templates/data/**/*.json', gulp.series('json', 'pug'));
 	gulp.watch([app + 'src/**/*.scss', '!' + app + 'src/libs.scss'], gulp.series('css'));
-	gulp.watch(app + 'src/libs.scss', gulp.series('css:libs'));
+	gulp.watch([app + 'src/libs.scss', app + 'libs/**/*.css'], gulp.series('css:libs'));
 	gulp.watch([app + 'src/**/*.js', '!' + app + 'src/libs.js'], gulp.series('js'));
-	gulp.watch(app + 'src/libs.js', gulp.series('js:libs'));
-	gulp.watch(app + 'img/**/*.{jpg,jpeg,png,gif}', gulp.series('img'));
+	gulp.watch([app + 'src/libs.js', app + 'libs/**/*.js'], gulp.series('js:libs'));
+	gulp.watch(app + 'img/**/*.{jpg,jpeg,png,gif,ico}', gulp.series('img'));
 	gulp.watch([app + 'img/**/*.svg', '!' + app + 'img/svg-sprite/**/*.svg'], gulp.series('svg'));
 	gulp.watch(app + 'img/svg-sprite/**/*.svg', gulp.series('svg:sprite'));
 	gulp.watch(app + 'fonts/**/*', gulp.series('fonts'));

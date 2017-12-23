@@ -122,7 +122,7 @@ module.exports = function(options) {
 		
 			fs.appendFileSync(
 				options.src + 'script.js',
-				'\r\n(function() { @@include(\'' + relPath + name + '.js\') }());'
+				'\r\n(function() { //=require \'' + relPath + name + '.js\') }());'
 			);
 		}
 		
@@ -174,8 +174,8 @@ module.exports = function(options) {
 		
 			gulp.src(options.src + 'script.js')
 				.pipe($.replace(
-					'@@include(\'' + options.relBlocks + name + '.js\')',
-					'@@include(\'' + dirThisRel + name + '.js\')'
+					'//=require \'' + options.relBlocks + name + '.js\')',
+					'//=require \'' + dirThisRel + name + '.js\')'
 				))
 				.pipe(gulp.dest(function(file) {
 					return file.base;

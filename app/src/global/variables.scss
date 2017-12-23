@@ -62,8 +62,7 @@ $path: '../';
 // Ретина
 @mixin retina() {
 
-	@media only screen and (-webkit-min-device-pixel-ratio: 1.5),
-	only screen and (min-resolution: 144dpi) {
+	@media (min-resolution: 2dppx) {
 		@content;
 	}
 }

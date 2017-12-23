@@ -1,6 +1,6 @@
 $(function() {
 
-	@@include('global/global.js')
+	//=require 'global/global.js'
 });
 
-@@include('global/functions.js')
+//=require 'global/functions.js'

@@ -7,6 +7,7 @@ module.exports = function(options) {
 	return function() {
 
 		return gulp.src(options.src)
+			.pipe($.if(!options.prod, $.sourcemaps.init()))
 			.pipe($.cssimport())
 			.pipe($.sass({
 				outputStyle: options.prod ? 'compressed' : 'expanded'
@@ -15,6 +16,7 @@ module.exports = function(options) {
 				preserve: false
 			})))
 			.pipe($.rename({suffix: '.min'}))
+			.pipe($.if(!options.prod, $.sourcemaps.write()))
 			.pipe(gulp.dest(options.dist))
 			.pipe(bs.stream());
 	}
