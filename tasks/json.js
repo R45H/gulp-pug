@@ -6,6 +6,7 @@ module.exports = function(options) {
 	return function() {
 
 		return gulp.src(options.src)
+			.pipe($.plumber())
 			.pipe($.mergeJson({
 				fileName: options.fName
 			}))

@@ -6,7 +6,8 @@ var
 module.exports = function(options) {
 	return function() {
 
-		return gulp.src(options.src)
+		return gulp.src(options.src, {since: gulp.lastRun('fonts')})
+			.pipe($.newer(options.dist))
 			.pipe(gulp.dest(options.dist))
 			.pipe(bs.stream());
 	}

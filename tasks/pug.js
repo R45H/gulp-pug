@@ -15,6 +15,7 @@ module.exports = function(options) {
 
 			emitty.scan(global.emittyChangedFile).then(function() {
 				gulp.src(options.src, sourceOptions)
+					.pipe($.plumber())
 					.pipe($.if(global.watch, emitty.filter(global.emittyChangedFile)))
 					.pipe($.data(function(file) {
 						return JSON.parse(fs.readFileSync(options.json))

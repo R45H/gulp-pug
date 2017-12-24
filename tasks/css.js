@@ -9,6 +9,7 @@ module.exports = function(options) {
 	return function() {
 
 		return gulp.src(options.src)
+			.pipe($.plumber())
 			.pipe($.if(!options.prod, $.sourcemaps.init()))
 			.pipe($.cssimport())
 			.pipe($.sass())
