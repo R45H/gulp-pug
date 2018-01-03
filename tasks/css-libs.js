@@ -10,15 +10,13 @@ module.exports = function(options) {
 			.pipe($.plumber())
 			.pipe($.if(!options.prod, $.sourcemaps.init()))
 			.pipe($.cssimport())
-			.pipe($.sass({
-				outputStyle: options.prod ? 'compressed' : 'expanded'
-			}))
 			.pipe($.if(options.prod, $.stripCssComments({
 				preserve: false
 			})))
+			.pipe($.if(options.prod, $.csso()))
 			.pipe($.rename({suffix: '.min'}))
 			.pipe($.if(!options.prod, $.sourcemaps.write()))
 			.pipe(gulp.dest(options.dist))
 			.pipe(bs.stream());
 	}
-}
+};

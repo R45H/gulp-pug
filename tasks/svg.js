@@ -6,7 +6,7 @@ var
 module.exports = function(options) {
 	return function() {
 
-		return gulp.src(options.src, {since: gulp.lastRun('svg')})
+		return gulp.src(options.src)
 			.pipe($.newer(options.dist))
 			.pipe($.if(options.prod, $.svgmin({
 				plugins: [{
@@ -16,4 +16,4 @@ module.exports = function(options) {
 			.pipe(gulp.dest(options.dist))
 			.pipe(bs.stream());
 	}
-}
+};

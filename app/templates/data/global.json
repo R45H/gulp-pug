@@ -1,11 +1,13 @@
 {
 	"global": [
 		{
-			"name": "Имя_проекта"
+			"name": "Имя_проекта",
+			"link_home": "/"
 		},
 		{
 			"addresses": [
 				{
+					"index": 123456,
 					"country": "Страна",
 					"city": "Город",
 					"address": "Адрес",

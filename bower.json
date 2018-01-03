@@ -1,17 +1,18 @@
 {
-  "name": "r45h-gulp",
-  "description": "",
-  "main": "script.js",
-  "authors": [
-    "R45H <gmr45h@gmail.com>"
-  ],
-  "license": "ISC",
-  "homepage": "",
-  "dependencies": {
-    "bootstrap": "v4.0.0-alpha.6",
-    "fontawesome": "4.*",
-    "jquery": "2.*",
-    "normalize-css": "^7.0.0",
-    "slick-carousel": "^1.8.0"
-  }
+	"name": "r45h-gulp",
+	"description": "",
+	"main": "script.js",
+	"authors": [
+		"R45H <gmr45h@gmail.com>"
+	],
+	"license": "ISC",
+	"homepage": "",
+	"dependencies": {
+		"bootstrap": "v4.0.0-alpha.6",
+		"fontawesome": "4.*",
+		"jquery": "2.*",
+		"normalize-css": "^7.0.0",
+		"slick-carousel": "^1.8.0",
+		"svg4everybody": "^2.1.9"
+	}
 }

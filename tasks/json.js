@@ -5,11 +5,13 @@ var
 module.exports = function(options) {
 	return function() {
 
+		if (global.watch) {
+			global.watch = 'json';
+		}
+
 		return gulp.src(options.src)
 			.pipe($.plumber())
-			.pipe($.mergeJson({
-				fileName: options.fName
-			}))
+			.pipe($.jsonmerge(options.fName))
 			.pipe(gulp.dest(options.dist));
 	}
-}
+};

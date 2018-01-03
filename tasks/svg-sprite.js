@@ -26,4 +26,4 @@ module.exports = function(options) {
 			.pipe(gulp.dest(options.dist))
 			.pipe(bs.stream());
 	}
-}
+};

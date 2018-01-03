@@ -1,23 +1,24 @@
 // Служебные файлы
-@import url('global/variables.scss'); // SASS переменные
-@import url('global/fonts.scss'); // Шрифты
-@import url('global/global.scss'); // Глобальные стили
+@import 'global/variables'; // SASS переменные
+@import 'global/fonts'; // Шрифты
+@import 'global/global'; // Глобальные стили
 // =====
 
 // Блоки
-@import url('blocks/map/map.scss'); // Карта
+@import 'blocks/map/map'; // Карта
+/* Blocks will be inserted here */
 // =====
 
 // Внешние контейнеры
-@import url('blocks/header.scss'); // Шапка
-@import url('blocks/footer.scss'); // Подвал
-@import url('blocks/section.scss'); // Секция контента
-@import url('blocks/main.scss'); // Контейнер контента
-@import url('blocks/wrapper.scss'); // Внешний контейнер
+@import 'blocks/header'; // Шапка
+@import 'blocks/footer'; // Подвал
+@import 'blocks/section'; // Секция контента
+@import 'blocks/main'; // Контейнер контента
+@import 'blocks/wrapper'; // Внешний контейнер
 // =====
 
 // Стили для печати
 @media print {
-	@import url('global/print.scss');
+	@import 'global/print';
 }
 // =====

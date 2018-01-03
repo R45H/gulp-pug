@@ -1,5 +1,4 @@
 var
-	gulp = require('gulp'),
 	$    = require('gulp-load-plugins')(),
 	fs   = require('fs'); // Чтение и запись файлов
 
@@ -23,9 +22,15 @@ module.exports = function(options) {
 				'block content\r\n' +
 				'\tinclude pages/' + name;
 
-		fs.writeFileSync(options.dist + name + '.pug', string);
-		fs.writeFileSync(options.dist + 'pages/' + name + '.pug', '');
+		if ((fs.existsSync(options.pageInit + name + '.pug')) || (fs.existsSync(options.page + name + '.pug'))) {
+			throw new Error('Страница "' + name + '.pug" уже существует!');
+		}
+
+		fs.writeFileSync(options.pageInit + name + '.pug', string);
+		fs.writeFileSync(options.page + name + '.pug', '');
+
+		console.log('Страница "' + name + '.pug" создана!');
 
 		done();
 	}
-}
+};

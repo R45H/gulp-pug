@@ -7,7 +7,7 @@ var
 module.exports = function(options) {
 	return function() {
 
-		return gulp.src(options.src, {since: gulp.lastRun('img')})
+		return gulp.src(options.src)
 			.pipe($.newer(options.dist))
 			.pipe($.if(options.prod, $.imagemin({
 				interlaced: true,
@@ -17,4 +17,4 @@ module.exports = function(options) {
 			.pipe(gulp.dest(options.dist))
 			.pipe(bs.stream());
 	}
-}
+};

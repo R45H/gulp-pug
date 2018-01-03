@@ -1,17 +1,19 @@
 // Плагины
 var
-   gulp = require('gulp'),
-	$    = require('gulp-load-plugins')();
+	gulp     = require('gulp'),
+	$        = require('gulp-load-plugins')(),
+   del      = require('del'), // Для удаления файлов и папок
+   path     = require('path'); // Для работы с путями
 
-// Переключатель сборки для работы или в продакшн (false для работы)
+// Флаг сборки на продакшн
 var prod = $.util.env.p || $.util.env.production;
 
 // Каталоги и файлы
 var
-	app      = './app/', // Исходники
-	dist     = prod ? './build/production/' : './build/dist/', // Собранный проект
-	temp     = './build/temp/', // Служебные файлы
-	more     = './more/', // Дополнительные материалы для работы
+	app      = 'app/', // Исходники
+	dist     = prod ? 'build/production/' : 'build/dist/', // Собранный проект
+	temp     = 'build/temp/', // Служебные файлы
+	more     = 'more/', // Дополнительные материалы для работы
 	jsonName = 'data.json', // Имя JSON файла
 	tasks    = './tasks/'; // Задачи галпа
 
@@ -42,7 +44,7 @@ lazyRequireTask('browser:sync', tasks + 'browser-sync', {
  * Собирает JSON файлы в один и выгружает в служебную папку
  */
 lazyRequireTask('json', tasks + 'json', {
-	src: app + '/templates/data/**/*.json', // Путь к исходникам
+	src: app + 'templates/data/**/*.json', // Путь к исходникам
 	dist: temp, // Путь для готового файла
 	fName: jsonName // Имя файла
 });
@@ -70,7 +72,7 @@ lazyRequireTask('css', tasks + 'css', {
  * Собирает стили всех библиотек в один файл, сжимает
  */
 lazyRequireTask('css:libs', tasks + 'css-libs', {
-	src: app + 'src/libs.scss', // Путь к исходникам
+	src: app + 'src/libs.css', // Путь к исходникам
 	dist: dist + 'css', // Путь для готовых файлов
 	prod: prod // Флаг сборки на продакшн
 });
@@ -174,20 +176,59 @@ gulp.task('build',
 gulp.task('watch', function() {
 	global.watch = true;
 
+	// PUG
 	gulp.watch(app + 'templates/**/*.pug', gulp.series('pug'))
 		.on('all', function(event, filepath) {
 			global.emittyChangedFile = filepath;
 		});
 
+	// JSON
 	gulp.watch(app + 'templates/data/**/*.json', gulp.series('json', 'pug'));
-	gulp.watch([app + 'src/**/*.scss', '!' + app + 'src/libs.scss'], gulp.series('css'));
-	gulp.watch([app + 'src/libs.scss', app + 'libs/**/*.css'], gulp.series('css:libs'));
-	gulp.watch([app + 'src/**/*.js', '!' + app + 'src/libs.js'], gulp.series('js'));
+
+	// CSS
+	gulp.watch(app + 'src/**/*.scss', gulp.series('css'));
+
+	// CSS:LIBS
+	gulp.watch([app + 'src/libs.css', app + 'libs/**/*.css'], gulp.series('css:libs'));
+
+	// JS
+	gulp.watch([
+		app + 'src/**/*.js',
+		'!' + app + 'src/libs.js'
+	], gulp.series('js'));
+
+	// JS:LIBS
 	gulp.watch([app + 'src/libs.js', app + 'libs/**/*.js'], gulp.series('js:libs'));
-	gulp.watch(app + 'img/**/*.{jpg,jpeg,png,gif,ico}', gulp.series('img'));
-	gulp.watch([app + 'img/**/*.svg', '!' + app + 'img/svg-sprite/**/*.svg'], gulp.series('svg'));
+
+	// IMG
+	gulp.watch(app + 'img/**/*.{jpg,jpeg,png,gif,ico}', gulp.series('img'))
+		.on('unlink', function (filepath) {
+			var
+				pathSrc = path.relative(path.resolve(app), filepath),
+				pathDist = path.resolve(dist, pathSrc);
+			del(pathDist);
+		});
+
+	// SVG
+	gulp.watch([app + 'img/**/*.svg', '!' + app + 'img/svg-sprite/**/*.svg'], gulp.series('svg'))
+		.on('unlink', function (filepath) {
+			var
+				pathSrc = path.relative(path.resolve(app), filepath),
+				pathDist = path.resolve(dist, pathSrc);
+			del(pathDist);
+		});
+
+	// SVG:SPRITE
 	gulp.watch(app + 'img/svg-sprite/**/*.svg', gulp.series('svg:sprite'));
-	gulp.watch(app + 'fonts/**/*', gulp.series('fonts'));
+
+	// FONTS
+	gulp.watch(app + 'fonts/**/*', gulp.series('fonts'))
+		.on('unlink', function (filepath) {
+			var
+				pathSrc = path.relative(path.resolve(app), filepath),
+				pathDist = path.resolve(dist, pathSrc);
+			del(pathDist);
+		});
 });
 
 /** DEFAULT
@@ -213,12 +254,12 @@ gulp.task('default',
  * Собирает из растровых картинок спрайт
  */
 lazyRequireTask('sprite', tasks + 'sprite', {
-	src: more + 'sprite/**/*.{jpg,jpeg,png,gif}', // Путь к исходникам
+	src: more + 'sprite/**/*.{jpg,jpeg,png,gif,ico}', // Путь к исходникам
 	dist: more + 'sprite', // Путь для готовых файлов
 	fName: 'result' // Имя готового файла
 });
 
-/** HTML2:TO:PUG
+/** HTML:TO:PUG
  * Конвертирует html в pug
  */
 lazyRequireTask('html:to:pug', tasks + 'html-to-pug', {
@@ -233,9 +274,10 @@ lazyRequireTask('html:to:pug', tasks + 'html-to-pug', {
  * layout (l) - Шаблон страницы
  */
 lazyRequireTask('page', tasks + 'page', {
-	dist: app + 'templates/', // Расположение новой страницы
-	name: 'blank', // Имя файла по умолчанию
-	title: 'Пустая страница', // Заголовок по умолчанию
+	pageInit: app + 'templates/', // Расположение новой страницы с параметрами
+	page: app + 'templates/pages/', // Расположение новой страницы с вёрсткой
+	name: 'page', // Имя файла по умолчанию
+	title: 'Новая страница', // Заголовок по умолчанию
 	layout: 'default' // Шаблон по умолчанию
 });
 
@@ -250,6 +292,7 @@ lazyRequireTask('page', tasks + 'page', {
  * components, component, comp (c) - Генерация PUG компонента
  * partials, partial, part     (p) - Генерация PUG включаемой области
  * json                        (o) - Генерация данных JSON
+ * comment, cmt                    - Комментарий для SCSS инклюда
  */
 lazyRequireTask('block', tasks + 'block', {
 	src: app + 'src/', // Путь до корневой папки блоков

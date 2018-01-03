@@ -16,7 +16,7 @@ module.exports = function(options) {
 			emitty.scan(global.emittyChangedFile).then(function() {
 				gulp.src(options.src, sourceOptions)
 					.pipe($.plumber())
-					.pipe($.if(global.watch, emitty.filter(global.emittyChangedFile)))
+					.pipe($.if(global.watch === true, emitty.filter(global.emittyChangedFile)))
 					.pipe($.data(function(file) {
 						return JSON.parse(fs.readFileSync(options.json))
 					}))
@@ -30,7 +30,12 @@ module.exports = function(options) {
 					.on('end', resolve)
 					.on('error', reject);
 			});
+
+			if (global.watch === 'json') {
+				global.watch = true;
+			}
+
 			resolve();
 		});
 	}
-}
+};

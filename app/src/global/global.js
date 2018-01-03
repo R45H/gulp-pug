@@ -6,3 +6,5 @@ $('.js-print').on('click', function() {
 	window.print();
 	return false;
 });
+
+svg4everybody();

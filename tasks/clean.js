@@ -5,4 +5,4 @@ module.exports = function(options) {
 
 		return del(options.dist);
 	}
-}
+};

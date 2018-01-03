@@ -11,7 +11,7 @@ module.exports = function(options) {
 		return gulp.src(options.src)
 			.pipe($.plumber())
 			.pipe($.if(!options.prod, $.sourcemaps.init()))
-			.pipe($.cssimport())
+			.pipe($.sassGlob())
 			.pipe($.sass())
 			.pipe($.postcss([
 				mqpacker({
@@ -26,4 +26,4 @@ module.exports = function(options) {
 			.pipe(gulp.dest(options.dist))
 			.pipe(bs.stream());
 	}
-}
+};
