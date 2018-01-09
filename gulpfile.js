@@ -59,10 +59,17 @@ lazyRequireTask('pug', tasks + 'pug', {
 	prod: prod // Флаг сборки на продакшн
 });
 
-/** CSS
+/** SCSS:LINT
+ * Проверяет SCSS на ошибки
+ */
+lazyRequireTask('scss:lint', tasks + 'scss-lint', {
+	src: app + 'src/**/*.scss' // Путь к исходникам
+});
+
+/** SCSS
  * Компилирует SCSS в CSS
  */
-lazyRequireTask('css', tasks + 'css', {
+lazyRequireTask('scss', tasks + 'scss', {
 	src: app + 'src/style.scss', // Путь к исходникам
 	dist: dist + 'css', // Путь для готовых файлов
 	prod: prod // Флаг сборки на продакшн
@@ -158,7 +165,8 @@ gulp.task('build',
 				'json',
 				'pug'
 			),
-			'css',
+			'scss:lint',
+			'scss',
 			'css:libs',
 			'js',
 			'js:libs',
@@ -185,8 +193,8 @@ gulp.task('watch', function() {
 	// JSON
 	gulp.watch(app + 'templates/data/**/*.json', gulp.series('json', 'pug'));
 
-	// CSS
-	gulp.watch(app + 'src/**/*.scss', gulp.series('css'));
+	// SCSS
+	gulp.watch(app + 'src/**/*.scss', gulp.parallel('scss', 'scss:lint'));
 
 	// CSS:LIBS
 	gulp.watch([app + 'src/libs.css', app + 'libs/**/*.css'], gulp.series('css:libs'));
