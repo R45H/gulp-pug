@@ -1,9 +1,9 @@
 // Плагины
 var
-	gulp     = require('gulp'),
-	$        = require('gulp-load-plugins')(),
-   del      = require('del'), // Для удаления файлов и папок
-   path     = require('path'); // Для работы с путями
+	gulp = require('gulp'),
+	$    = require('gulp-load-plugins')(),
+   del  = require('del'), // Для удаления файлов и папок
+   path = require('path'); // Для работы с путями
 
 // Флаг сборки на продакшн
 var prod = $.util.env.p || $.util.env.production;
@@ -265,6 +265,13 @@ lazyRequireTask('sprite', tasks + 'sprite', {
 	src: more + 'sprite/**/*.{jpg,jpeg,png,gif,ico}', // Путь к исходникам
 	dist: more + 'sprite', // Путь для готовых файлов
 	fName: 'result' // Имя готового файла
+});
+
+/** HTML:VALID
+ * Проверка HTML на валидность
+ */
+lazyRequireTask('html:valid', tasks + 'html-valid', {
+	src: dist + '*.html' // Путь к исходникам
 });
 
 /** HTML:TO:PUG

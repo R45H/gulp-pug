@@ -29,14 +29,10 @@ module.exports = function(options) {
 		if (!keyScss && !keyJs && !keyPugMixin && !keyPugComp && !keyPugPart && !keyDataJson) {
 
 			if (fs.existsSync(dirBlocks + name + '.scss')) {
-				throw new Error('Файл "' + name + '.scss" уже существует!');
-			}
-
-			if (fs.existsSync(dirBlocks + name)) {
-				throw new Error('Папка "' + name + '" уже существует!');
-			}
-
-			if (fs.existsSync(dirBlocks + name + '.js')) {
+				printMsg('err', 'Файл "' + name + '.scss" уже существует!');
+			} else if (fs.existsSync(dirBlocks + name)) {
+				printMsg('err', 'Папка "' + name + '" уже существует!');
+			} else if (fs.existsSync(dirBlocks + name + '.js')) {
 				moveJsToFolder();
 				addScss(dirThis, dirThisRel);
 			} else {
@@ -49,10 +45,8 @@ module.exports = function(options) {
 		if (keyScss) {
 
 			if (fs.existsSync(dirThis)) {
-				throw new Error('Папка "' + name + '" уже существует!');
-			}
-
-			if (keyJs) {
+				printMsg('err', 'Папка "' + name + '" уже существует!');
+			} else if (keyJs) {
 
 				fs.mkdirSync(dirThis);
 
@@ -75,7 +69,7 @@ module.exports = function(options) {
 				} else {
 
 					if (fs.existsSync(dirBlocks + name + '.scss')) {
-						throw new Error('Файл "' + name + '.scss" уже существует!');
+						printMsg('err', 'Файл "' + name + '.scss" уже существует!');
 					} else {
 						addScss(dirBlocks, options.relBlocks);
 					}
@@ -86,7 +80,8 @@ module.exports = function(options) {
 			if (keyJs) {
 
 				if (fs.existsSync(dirThis)) {
-					throw new Error('Папка "' + name + '" уже существует!');
+					printMsg('err', 'Папка "' + name + '" уже существует!');
+					return false;
 				}
 
 				if (fs.existsSync(dirBlocks + name + '.scss')) {
@@ -95,7 +90,7 @@ module.exports = function(options) {
 				} else {
 
 					if (fs.existsSync(dirBlocks + name + '.js')) {
-						throw new Error('Файл "' + name + '.js" уже существует!');
+						printMsg('err', 'Файл "' + name + '.js" уже существует!');
 					} else {
 						addJs(dirBlocks, options.relBlocks);
 					}
@@ -108,10 +103,10 @@ module.exports = function(options) {
 		if (keyPugMixin) {
 
 			if (fs.existsSync(dirTemp + 'mixins/' + name + '.pug')) {
-				throw new Error('Миксин "' + name + '.pug" уже существует!');
+				printMsg('err', 'Миксин "' + name + '.pug" уже существует!');
+			} else {
+				addPugMixin(dirTemp);
 			}
-
-			addPugMixin(dirTemp);
 		}
 		// =====
 
@@ -119,10 +114,10 @@ module.exports = function(options) {
 		if (keyPugComp) {
 
 			if (fs.existsSync(dirTemp + 'components/' + name + '.pug')) {
-				throw new Error('Компонент "' + name + '.pug" уже существует!');
+				printMsg('err', 'Компонент "' + name + '.pug" уже существует!');
+			} else {
+				addPugComp(dirTemp);
 			}
-
-			addPugComp(dirTemp);
 		}
 		// =====
 
@@ -130,10 +125,10 @@ module.exports = function(options) {
 		if (keyPugPart) {
 
 			if (fs.existsSync(dirTemp + 'partials/' + name + '.pug')) {
-				throw new Error('Включаемая область "' + name + '.pug" уже существует!');
+				printMsg('err', 'Включаемая область "' + name + '.pug" уже существует!');
+			} else {
+				addPugPart(dirTemp);
 			}
-
-			addPugPart(dirTemp);
 		}
 		// =====
 
@@ -142,10 +137,10 @@ module.exports = function(options) {
 			var fName = name.replace(new RegExp('-', 'g'), '_');
 
 			if (fs.existsSync(dirTemp + 'data/' + fName + '.json')) {
-				throw new Error('Файл с данными "' + fName + '.json" уже существует!');
+				printMsg('err', 'Файл с данными "' + fName + '.json" уже существует!');
+			} else {
+				addDataJson(dirTemp);
 			}
-
-			addDataJson(dirTemp);
 		}
 		// =====
 
@@ -173,7 +168,7 @@ module.exports = function(options) {
 					return file.base;
 				}));
 
-			console.log('Файл "' + name + '.scss" создан!');
+			printMsg('ok', 'Файл "' + name + '.scss" создан!');
 		}
 
 		function addJs(path, relPath) {
@@ -200,7 +195,7 @@ module.exports = function(options) {
 					return file.base;
 				}));
 
-			console.log('Файл "' + name + '.js" создан!');
+			printMsg('ok', 'Файл "' + name + '.js" создан!');
 		}
 
 		function addPugMixin(path) {
@@ -210,7 +205,7 @@ module.exports = function(options) {
 				'mixin ' + name + '(data)\r\n\t'
 			);
 
-			console.log('Миксин "' + name + '.pug" создан!');
+			printMsg('ok', 'Миксин "' + name + '.pug" создан!');
 		}
 
 		function addPugComp(path) {
@@ -220,7 +215,7 @@ module.exports = function(options) {
 				''
 			);
 
-			console.log('Компонент "' + name + '.pug" создан!');
+			printMsg('ok', 'Компонент "' + name + '.pug" создан!');
 		}
 
 		function addPugPart(path) {
@@ -230,7 +225,7 @@ module.exports = function(options) {
 				''
 			);
 
-			console.log('Включаемая область "' + name + '.pug" создана!');
+			printMsg('ok', 'Включаемая область "' + name + '.pug" создана!');
 		}
 
 		function addDataJson(path) {
@@ -247,7 +242,7 @@ module.exports = function(options) {
 
 			fs.writeFileSync(path + 'data/' + fName + '.json', str);
 
-			console.log('Файл с данными "' + fName + '.json" создан!');
+			printMsg('ok', 'Файл с данными "' + fName + '.json" создан!');
 		}
 
 		function moveJsToFolder() {
@@ -268,7 +263,7 @@ module.exports = function(options) {
 					return file.base;
 				}));
 
-			console.log('Файл "' + name + '.js" перенесён в папку "' + dirThis + '"!');
+			printMsg('ok', 'Файл "' + name + '.js" перенесён в папку "' + dirThis + '"!');
 
 			return del(dirBlocks + name + '.js');
 		}
@@ -291,9 +286,17 @@ module.exports = function(options) {
 					return file.base;
 				}));
 
-			console.log('Файл "' + name + '.scss" перенесён в папку "' + dirThis + '"!');
+			printMsg('ok', 'Файл "' + name + '.scss" перенесён в папку "' + dirThis + '"!');
 
 			return del(dirBlocks + name + '.scss');
+		}
+
+		function printMsg(state, str) {
+			var
+				reset = "\x1b[0m",
+				fgColor = (state == 'ok') ? '\x1b[32m' : (state == 'err') ? '\x1b[31m' : reset;
+
+			console.log(fgColor + '%s' + reset, str);
 		}
 
 		done();
