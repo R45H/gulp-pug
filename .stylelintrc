@@ -21,7 +21,7 @@
 		"comment-no-empty": true,
 		"no-duplicate-at-import-rules": true,
 		"no-extra-semicolons": true,
-		"number-max-precision": 6,
+		"number-max-precision": 10,
 		"shorthand-property-no-redundant-values": true,
 		"value-no-vendor-prefix": true,
 		"property-no-vendor-prefix": [
