@@ -36,28 +36,28 @@ $path: '../';
 // Брейкпоинты
 @mixin screen-sm($direct: 'min') {
 
-	@media (if($direct == 'max', 'max-width: #{$point-sm} - 1', 'min-width: #{$point-sm}')) {
+	@media (if($direct == 'max', 'max-width: #{$point-sm - 1}', 'min-width: #{$point-sm}')) {
 		@content;
 	}
 }
 
 @mixin screen-md($direct: 'min') {
 
-	@media (if($direct == 'max', 'max-width: #{$point-md} - 1', 'min-width: #{$point-md}')) {
+	@media (if($direct == 'max', 'max-width: #{$point-md - 1}', 'min-width: #{$point-md}')) {
 		@content;
 	}
 }
 
 @mixin screen-lg($direct: 'min') {
 
-	@media (if($direct == 'max', 'max-width: #{$point-lg} - 1', 'min-width: #{$point-lg}')) {
+	@media (if($direct == 'max', 'max-width: #{$point-lg - 1}', 'min-width: #{$point-lg}')) {
 		@content;
 	}
 }
 
 @mixin screen-xl($direct: 'min') {
 
-	@media (if($direct == 'max', 'max-width: #{$point-xl} - 1', 'min-width: #{$point-xl}')) {
+	@media (if($direct == 'max', 'max-width: #{$point-xl - 1}', 'min-width: #{$point-xl}')) {
 		@content;
 	}
 }
